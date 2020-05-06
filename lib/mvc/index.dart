@@ -13,12 +13,9 @@ class MainEntry extends StatefulWidget {
 }
 
 class _MainEntryState extends State<MainEntry> {
-  Location location;
-
   @override
   void initState() {
     super.initState();
-    print('show');
     setTimeout(() {
       location.replace("/home", 1);
     }, 1000);
@@ -26,10 +23,6 @@ class _MainEntryState extends State<MainEntry> {
 
   @override
   Widget build(BuildContext context) {
-    location = new Location(context);
-    if (location.routeView != null) {
-      return location.routeView;
-    }
     return new Container(
       child: new Center(
         child: new Text('项目初始化...'),

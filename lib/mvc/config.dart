@@ -12,19 +12,26 @@ List<Map<String, dynamic>> routeConfig = [
   },
 ];
 
-
-// 递归获取路由配置的映射
-Map<String, Map> routeMap = new Map();
-
-void loopForRouteMap(List configs, String rootUrl, bool isChild) {
-  routeConfig.forEach((item) {
+/// 递归获取路由配置的映射
+/// 如 {"/home":{}, "/about": {}}
+Map<String, Map<String, dynamic>> loopForRouteMap(List configs, String rootUrl, [routeMap]) {
+  bool isChild = routeMap != null;
+  Map<String, Map<String, dynamic>> tempRouteMap = routeMap ?? new Map();
+  routeConfig.forEach((Map<String, dynamic> item) {
     String url = rootUrl + item['name'];
     url = url.replaceAll('//', '/');
-    item['isChild'] = isChild;
-    routeMap[url] = item;
+    if (isChild) {
+      item['parent'] = rootUrl;
+      item['isChild'] = isChild;
+    }
+    tempRouteMap[url] = item;
     List children = item['children'];
     if (children != null) {
-      loopForRouteMap(children, url, true);
+      tempRouteMap = loopForRouteMap(children, url, tempRouteMap);
     }
   });
+  return tempRouteMap;
 }
+
+/// 路由配置的映射
+Map<String, Map> routeMap = loopForRouteMap(routeConfig, "/");

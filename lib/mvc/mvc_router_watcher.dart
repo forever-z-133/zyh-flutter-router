@@ -3,6 +3,4 @@ class RouterWatcher {
     next(to);
   }
   void afterEach(String to, String from) {}
-  void beforeRouteEnter(String to, String from, next) {}
-  void beforeRouteLeave(String to, String from, next) {}
 }
