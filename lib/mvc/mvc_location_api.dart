@@ -33,27 +33,22 @@ class Location {
   /// 跳转
   void push(String to, [dynamic params]) {
     updateRoute('PUSH', to, params, () {
-      history.addQueue(to);
-      print('${history.queue}');
+      history.go(history.index + 1, to);
     });
   }
 
   /// 删除本页历史然后跳转
   void replace(String to, [dynamic params]) {
     updateRoute('REPLACE', to, params, () {
-      history.go(-1);
-      history.addQueue(to);
-      print('${history.queue}');
+      history.go(history.index, to);
     });
   }
 
   /// 后退一页
   void back() {
-    print('${history.queue}');
-    String to = history.queue.last;
+    String to = history.queue[history.index - 1];
     updateRoute('BACK', to, null, () {
-      history.go(-1);
-      print('${history.queue}');
+      history.go(history.index - 1, to);
     });
   }
 
@@ -76,6 +71,7 @@ class Location {
       }
       
       method(MaterialPageRoute(builder: component));
+      print('$href 到 $to');
       watcher.afterEach(to, href);
       callback();
       href = to;
